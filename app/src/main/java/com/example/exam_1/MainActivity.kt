@@ -62,20 +62,20 @@ fun CalculatorApp() {
     val textColor     = if (isDark) Color.White else Color(0xFF1A1A1A)
     val exprColor     = Color(0xFF888888)
 
-
+    // so hien thi
     var display       by remember { mutableStateOf("0") }
-
+    //toan tu
     var expression    by remember { mutableStateOf("") }
-
+    // so dau tien
     var firstOperand  by remember { mutableStateOf<Double?>(null) }
-
+    // dau dang cho tinh
     var pendingOp     by remember { mutableStateOf<String?>(null) }
-
+    // flag sau khi an = , op
     var isNewInput    by remember { mutableStateOf(false) }
-
+    // flag sau khi an =
     var justCalc      by remember { mutableStateOf(false) }
 
-
+//exception
     fun fmt(n: Double): String {
         if (n.isInfinite()) return "Cannot divide by 0"
         if (n.isNaN()) return "Error"
@@ -83,7 +83,7 @@ fun CalculatorApp() {
         else n.toBigDecimal().stripTrailingZeros().toPlainString()
     }
 
-
+// calculate
     fun compute(a: Double, op: String, b: Double): Double = when (op) {
         "+" -> a + b
         "-" -> a - b
@@ -91,7 +91,7 @@ fun CalculatorApp() {
         "/" -> if (b != 0.0) a / b else Double.POSITIVE_INFINITY
         else -> b
     }
-
+//0123456789
     fun onDigit(d: String) {
         if (isNewInput || justCalc) {
             display = d
@@ -102,7 +102,7 @@ fun CalculatorApp() {
             display = if (display == "0") d else display + d
         }
     }
-
+//.
     fun onDecimal() {
         if (isNewInput || justCalc) {
             display = "0."
@@ -112,7 +112,7 @@ fun CalculatorApp() {
             display += "."
         }
     }
-
+//00
     fun onDoubleZero() {
         if (!isNewInput && !justCalc && display != "0" &&
             display.replace(".", "").replace("-", "").length < 14
@@ -120,7 +120,7 @@ fun CalculatorApp() {
             display += "00"
         }
     }
-
+// +/*-
     fun onOperator(op: String) {
         val cur = display.toDoubleOrNull() ?: 0.0
 
@@ -139,7 +139,7 @@ fun CalculatorApp() {
         justCalc   = false
         display    = "0"
     }
-
+// =
     fun onEquals() {
         if (pendingOp == null || firstOperand == null) return
         val second = display.toDoubleOrNull() ?: 0.0
@@ -150,7 +150,7 @@ fun CalculatorApp() {
         firstOperand = null
         justCalc     = true
     }
-
+// C
     fun onClear() {
         display      = "0"
         expression   = ""
@@ -160,7 +160,7 @@ fun CalculatorApp() {
         justCalc     = false
     }
 
-
+// CE
     fun onClearEntry() {
         display    = "0"
         if (justCalc) expression = ""
@@ -190,13 +190,14 @@ fun CalculatorApp() {
         else                -> 52.sp
     }
 
-
+// screen
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(bgColor)
             .systemBarsPadding()
     ) {
+        // screen 1
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -205,7 +206,7 @@ fun CalculatorApp() {
             verticalArrangement   = Arrangement.Bottom,
             horizontalAlignment   = Alignment.End
         ) {
-
+            // small display
             Text(
                 text      = expression,
                 color     = exprColor,
@@ -215,6 +216,7 @@ fun CalculatorApp() {
                 overflow  = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.height(6.dp))
+            // main display
             Text(
                 text       = display,
                 color      = textColor,
@@ -225,7 +227,7 @@ fun CalculatorApp() {
                 overflow   = TextOverflow.Ellipsis
             )
         }
-
+        // button
         Column(
             modifier = Modifier
                 .fillMaxWidth()
